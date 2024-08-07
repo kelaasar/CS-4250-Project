@@ -30,6 +30,10 @@ class WebCrawler:
             
     # Determines if the current page matches the faculty website HTML format
     def target_page(html):
+    
+    def clear_frontier():
+        frontier = []
+        return
         
     def crawlerThread(frontier, num_targets):
         targets_found = 0

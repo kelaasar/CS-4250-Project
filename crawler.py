@@ -1,7 +1,7 @@
 # Arze: im keeping the prof's method names as it is for now
 
 # Custom files
-import mongo_manager
+import mongo_manager as mongo
 import parser
 
 import re
@@ -14,9 +14,10 @@ class WebCrawler:
     
     def __init__(self, seed_url):
         self.frontier = [seed_url]
-        self.visited_url = []
+        self.visited = []
         
-    # Retrieve HTML content from a given url    
+    # Retrieve HTML content from a given url
+    @staticmethod
     def retrieveURL(url):
         try:
             html = urlopen(url)
@@ -29,29 +30,36 @@ class WebCrawler:
             return None
             
     # Determines if the current page matches the faculty website HTML format
+    @staticmethod
     def target_page(html):
-    
-    def clear_frontier():
-        frontier = []
+        try:
+            bs.find('div', attr={'class': 'fac-info'})
+        except:
+            return False
+        return True
+        
+    # Clear the list of new unvisited links
+    def clear_frontier(self):
+        self.frontier = []
         return
         
-    def crawlerThread(frontier, num_targets):
+    def crawlerThread(self, frontier, num_targets):
         targets_found = 0
-            while frontier:
-                url = frontier.pop()
+            while self.frontier:
+                url = self.frontier.pop()
                 
-                if url in visited_url:
+                if url in visited:
                     continue
                 else:
-                    visited_url.append(url)
+                    self.visited.append(url)
                     
                 html = retrieveURL(url)
-                storePage(url, html)
+                mongo.storePage(url, html)
                 
-                if target_page(html):
+                if self.target_page(html):
                     targets_found = targets_found + 1
                 if targets_found == num_targets:
-                    clear_frontier()
+                    self.clear_frontier()
                 else:
-                    for each not visited url in parse(html):
-                        frontier.addURL(url)
+                    for each not visited url in parser.parse(html):
+                        self.frontier.append(url)

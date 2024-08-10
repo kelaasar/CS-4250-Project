@@ -40,7 +40,7 @@ def get_weights(content):
     return (vector.toarray(), vectorizer.get_feature_names_out())
         
 def index():
-    docs = mongo.retrieve_faculty_docs()
+    docs = mongodb.retrieve_docs("Faculties")
 
     stop_words = set(stopwords.words('english'))
     lemmatizer = WordNetLemmatizer()

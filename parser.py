@@ -1,44 +1,11 @@
 import mongo
 import re
-import nltk
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.parse import urljoin
-from nltk import word_tokenize
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import stopwords
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 
-def index(base, content):
-    stop_words = set(stopwords.words('englsh'))
-    lemmatizer = WordNetLemmatizer()
-    vectorizer = CountVectorizer()
-    tokenizer = vectorizer.build_tokenizer()
-
-    tokens = word_tokenize(content)
-
-    stopped = [word.lower() for word in tokens if word.lower() not in stop_words]
-    lemmatized = [lemmatizer.lemmatize(word) for word in stopped]
-    filtered = [word for word in lemmatized if word.isalpha()]
-
-    content = [' '.join(filtered)]
-
-    vector = vectorizer.fit_transform(content)
-
-    tokens = vectorizer.get_feature_names_out()
-    occurrences = vector.toarray()[0]
-    size = len(tokens)
-    indices = {}
-
-    indices['URL'] = base
-
-    for i in range(size):
-        indices[tokens[i]] = occurrences[i]
-
-    mongo.store_indices(indices)
-    
+# Filters given HTML content,
+# then store the raw text data of target pages in MongoDB
 def parse(html):
     bs = BeautifulSoup(html, 'html.parser')
     html = str(bs)
@@ -68,13 +35,7 @@ def parse(html):
     content = bs.find('div', attrs={'class', 'fac-staff'}).get_text()
     content += bs.find('div', attrs={'class', 'accolades'}).get_text()
     doc = {'content': content}
-    mongo.store_target_page(doc)
-
-    index(content)
-
-    # do vector here
-    
-    
+    mongo.store_target_page(doc) 
 
     return links
 

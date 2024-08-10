@@ -10,8 +10,7 @@ from urllib.error import HTTPError
 from urllib.error import URLError
 
 class WebCrawler:
-    def __init__(self, seed_url, depth):
-        self.frontier = [seed_url]
+    def __init__(self, depth):        
         self.depth = 0
         self.visited = []
         
@@ -50,6 +49,7 @@ class WebCrawler:
         return
         
     def crawlerThread(self, frontier, num_targets):
+        self
         targets_found = 0
         while self.frontier:
             url = self.frontier.pop()

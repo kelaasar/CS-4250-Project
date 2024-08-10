@@ -1,20 +1,29 @@
 from crawler import WebCrawler
-
+import parser
 import mongo
+import indexer
 
 mongo.init()
 
 # Obtains crawler obj
-crawler = WebCrawler("https://www.cpp.edu/engineering/ce/index.shtml")
-crawler.
+crawler = WebCrawler()
+target_links = crawler.crawlerThread("https://www.cpp.edu/engineering/ce/index.shtml", 10) # unordered target links
 
-done = False
 
-while not done:
-    input = input("Enter query: ")
-    links = mongo.query(input)
 
-    print("Relevant links:\n")
-    for link in links:
-        print(link)
 
+# ░░░░▄▄▄▄▀▀▀▀▀▀▀▀▄▄▄▄▄▄
+# ░░░░█░░░░▒▒▒▒▒▒▒▒▒▒▒▒░░▀▀▄
+# ░░░█░░░▒▒▒▒▒▒░░░░░░░░▒▒▒░░█
+# ░░█░░░░░░▄██▀▄▄░░░░░▄▄▄░░░█
+# ░▀▒▄▄▄▒░█▀▀▀▀▄▄█░░░██▄▄█░░░█
+# █▒█▒▄░▀▄▄▄▀░░░░░░░░█░░░▒▒▒▒▒█
+# █▒█░█▀▄▄░░░░░█▀░░░░▀▄░░▄▀▀▀▄▒█
+# ░█▀▄░█▄░█▀▄▄░▀░▀▀░▄▄▀░░░░█░░█
+# ░░█░░▀▄▀█▄▄░█▀▀▀▄▄▄▄▀▀█▀██░█
+# ░░░█░░██░░▀█▄▄▄█▄▄█▄████░█
+# ░░░░█░░░▀▀▄░█░░░█░███████░█
+# ░░░░░▀▄░░░▀▀▄▄▄█▄█▄█▄█▄▀░░█
+# ░░░░░░░▀▄▄░▒▒▒▒░░░░░░░░░░█
+# ░░░░░░░░░░▀▀▄▄░▒▒▒▒▒▒▒▒▒▒░█
+# ░░░░░░░░░░░░░░▀▄▄▄▄▄░░░░░

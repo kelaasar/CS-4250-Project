@@ -1,4 +1,5 @@
-import mongo
+import mongodb
+
 import re
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
@@ -27,15 +28,13 @@ def parse(html):
             except:
                 continue
 
-    try:
-        bs.find('div', attr={'class': 'fac-info'})
-    except:
+    if bs.find('div', attrs={'class': 'fac-staff'}) is None:
         return links
-
-    content = bs.find('div', attrs={'class', 'fac-staff'}).get_text()
-    content += bs.find('div', attrs={'class', 'accolades'}).get_text()
-    doc = {'content': content}
-    mongo.store_target_page(doc) 
+        
+    content = bs.find('div', attrs={'class': 'fac-staff'}).get_text()
+    content += bs.find('div', attrs={'class': 'accolades'}).get_text()
+    doc = {'url':base, 'content': content}
+    mongodb.store_doc("Faculties", doc) 
 
     return links
 
